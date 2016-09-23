@@ -1,34 +1,25 @@
 import React, {
-    Component,
-    PropTypes
-} from 'react';
+    Component
+} from 'react'
 import  {
     Image,
-    PixelRatio,
     Dimensions
-} from 'react-native';
+} from 'react-native'
 
+export default class FitImage extends Component {
 
-const propTypes = {
-    originalHeight: PropTypes.number,
-    originalWidth: PropTypes.number,
-    source: PropTypes.object.isRequired
-};
+    shouldComponentUpdate(){
+        return false
+    }
 
-class FitImage extends Component {
     render() {
         const imageHeightPx = this.props.originalHeight
         const imageWidthPx = this.props.originalWidth
         const screenWidthPt = Dimensions.get('window').width
-        const screenHeightPt = Dimensions.get('window').height
-        const screenWidthPx = PixelRatio.getPixelSizeForLayoutSize(screenWidthPt)
 
-        let newImageWidth = (imageWidthPx >= screenWidthPx) ?
-            screenWidthPt :
-            (imageWidthPx / screenWidthPx) * screenWidthPt
-        let newImageHeight = (imageWidthPx >= screenWidthPx) ?
-            (imageHeightPx / imageWidthPx) * screenWidthPt :
-            (imageHeightPx / imageWidthPx) * newImageWidth
+        let newImageWidth = (imageWidthPx >= screenWidthPt) ?
+            screenWidthPt : imageWidthPx
+        let newImageHeight = (imageHeightPx / imageWidthPx) * newImageWidth
 
         return (
             <Image
@@ -41,7 +32,3 @@ class FitImage extends Component {
         )
     }
 }
-
-FitImage.propTypes = propTypes;
-
-export default FitImage;
