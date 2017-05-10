@@ -8,25 +8,33 @@ import  {
 
 export default class FitImage extends Component {
 
-    shouldComponentUpdate(){
-        return false
+    state = {
+        height: 0,
+        width: 0
+    }
+
+    componentDidMount(){
+        Image.getSize(this.props.source.uri, (imageWidthPx, imageHeightPx) => {
+            const screenWidthPt = Dimensions.get('window').width
+
+            let newImageWidth = (imageWidthPx >= screenWidthPt) ?
+                screenWidthPt : imageWidthPx
+            let newImageHeight = (imageHeightPx / imageWidthPx) * newImageWidth
+            this.setState({
+                width: Math.round(newImageWidth),
+                height: Math.round(newImageHeight)
+            })
+        })
+
     }
 
     render() {
-        const imageHeightPx = this.props.originalHeight
-        const imageWidthPx = this.props.originalWidth
-        const screenWidthPt = Dimensions.get('window').width
-
-        let newImageWidth = (imageWidthPx >= screenWidthPt) ?
-            screenWidthPt : imageWidthPx
-        let newImageHeight = (imageHeightPx / imageWidthPx) * newImageWidth
-
         return (
             <Image
                 source={this.props.source}
                 style={{
-                    width: newImageWidth,
-                    height: newImageHeight
+                    width: this.state.width,
+                    height: this.state.height
                 }}
             />
         )
