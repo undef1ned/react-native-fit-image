@@ -13,8 +13,8 @@ export default class FitImage extends Component {
     }
 
     render() {
-        const imageHeightPx = this.props.originalHeight
-        const imageWidthPx = this.props.originalWidth
+        const imageHeightPx = this.props.originalHeight || 1
+        const imageWidthPx = this.props.originalWidth || 1
         const screenWidthPt = Dimensions.get('window').width
 
         let newImageWidth = (imageWidthPx >= screenWidthPt) ?
@@ -26,7 +26,8 @@ export default class FitImage extends Component {
                 source={this.props.source}
                 style={{
                     width: Math.round(newImageWidth),
-                    height: Math.round(newImageHeight)
+                    height: Math.round(newImageHeight),
+                    resizeMode: "contain"
                 }}
             />
         )
